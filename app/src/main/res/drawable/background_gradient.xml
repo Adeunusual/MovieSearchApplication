@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+       This is a multi-layer drawable. The first layer is the background image
+       and the second is a dark overlay to improve foreground readability.
+   -->
+
+    <!-- Layer 1: Background Image -->
+    <item>
+        <bitmap
+            android:src="@drawable/movies_background"
+            android:gravity="fill"
+            android:alpha="0.45"/>
+    </item>
+
+    <!-- Layer 2: Semi-Transparent Overlay -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#B3020000"/> <!-- Dark red overlay with ~70% opacity -->
+        </shape>
+    </item>
+</layer-list>

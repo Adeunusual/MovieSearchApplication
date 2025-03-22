@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">My Movie Search App</string>
+    <string name="search_title">Search Movies</string>
+    <string name="search_hint">Enter Movie Title</string>
+    <string name="search_button_text">Search</string>
+    <string name="movie_poster_desc">Movie Poster</string>
+    <string name="back_button_text">Back</string>
+    <string name="toast_enter_movie">Enter a movie title</string>
+    <string name="toast_clicked_movie">Clicked: </string>
+    <string name="toast_movie_missing">Error: Movie data is missing</string>
+</resources>

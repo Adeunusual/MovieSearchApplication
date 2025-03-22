@@ -5,7 +5,8 @@ package com.example.mymoviesearchapplication.model;
  * the data for a single movie retrieved from the OMDb API.
  */
 public class MovieItem {
-    // These fields map directly to the movie properties returned from the API
+
+    // These fields map directly to the basic movie info from OMDb search API
     private String Title;
     private String Year;
     private String imdbID;
@@ -13,7 +14,7 @@ public class MovieItem {
     private String Poster;
 
     /**
-     * Constructor to initialize a MovieItem object with all required movie details.
+     * Constructor to initialize a MovieItem object with search results.
      *
      * @param title   - The title of the movie
      * @param year    - The release year of the movie
@@ -29,7 +30,8 @@ public class MovieItem {
         this.Poster = poster;
     }
 
-    // Getter methods to access each property of the movie
+    // Getter methods for each property
+
     public String getTitle() {
         return Title;
     }

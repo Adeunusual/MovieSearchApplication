@@ -1,76 +1,112 @@
 package com.example.mymoviesearchapplication.view;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mymoviesearchapplication.R;
+import com.example.mymoviesearchapplication.model.MovieDetailItem;
+import com.example.mymoviesearchapplication.viewmodel.MovieViewModel;
 
 import java.io.InputStream;
 import java.net.URL;
 
 /**
  * MovieDetailsActivity is responsible for displaying detailed information
- * about a selected movie. It retrieves movie data passed from MainActivity
- * and updates the UI accordingly.
+ * about a selected movie. It fetches data from the ViewModel using the IMDb ID
+ * passed from MainActivity and updates the UI accordingly.
  */
 public class MovieDetailsActivity extends AppCompatActivity {
 
-    // UI components for displaying movie details
+    // UI components for displaying full movie details
     private ImageView moviePoster;
-    private TextView movieTitle, movieYear, movieType;
-    private Button backButton;
+    private TextView movieTitle, movieYear, movieRated, movieReleased, movieRuntime,
+            movieGenre, movieDirector, movieWriter, movieActors, moviePlot,
+            movieLanguage, movieCountry, movieAwards, movieRating;
+
+    private ImageButton  backButton;
+
+    // ViewModel reference for fetching the detailed movie data
+    private MovieViewModel movieViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_details);
+        setContentView(R.layout.activity_movie_details); // Load the layout
 
-        // Initialize UI elements
+        // Connect UI elements to Java variables
         moviePoster = findViewById(R.id.moviePoster);
         movieTitle = findViewById(R.id.movieTitle);
         movieYear = findViewById(R.id.movieYear);
-        movieType = findViewById(R.id.movieType);
+        movieRated = findViewById(R.id.movieRated);
+        movieReleased = findViewById(R.id.movieReleased);
+        movieRuntime = findViewById(R.id.movieRuntime);
+        movieGenre = findViewById(R.id.movieGenre);
+        movieDirector = findViewById(R.id.movieDirector);
+        movieWriter = findViewById(R.id.movieWriter);
+        movieActors = findViewById(R.id.movieActors);
+        moviePlot = findViewById(R.id.moviePlot);
+        movieLanguage = findViewById(R.id.movieLanguage);
+        movieCountry = findViewById(R.id.movieCountry);
+        movieAwards = findViewById(R.id.movieAwards);
+        movieRating = findViewById(R.id.movieRating);
         backButton = findViewById(R.id.backButton);
 
-        // Get movie data from Intent (sent from MainActivity)
-        Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("title") && intent.hasExtra("year") && intent.hasExtra("type") && intent.hasExtra("poster")) {
-            // Set movie details from the received data
-            movieTitle.setText(intent.getStringExtra("title"));
-            movieYear.setText("Year: " + intent.getStringExtra("year"));
-            movieType.setText("Type: " + intent.getStringExtra("type"));
+        // Initialize the ViewModel to fetch movie data
+        movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
 
-            // Load movie poster asynchronously from the URL
-            String posterUrl = intent.getStringExtra("poster");
-            if (posterUrl != null && !posterUrl.isEmpty()) {
-                new LoadImageTask(moviePoster).execute(posterUrl);
-            } else {
-                // Display a default placeholder if no image is available
-                moviePoster.setImageResource(android.R.drawable.ic_menu_report_image);
-            }
+        // Get IMDb ID from the Intent
+        String imdbID = getIntent().getStringExtra("imdbID");
+
+        if (imdbID != null) {
+            // Call the ViewModel to fetch full movie details
+            movieViewModel.fetchMovieDetails(imdbID);
+
+            // Observe the LiveData and update UI when data is available
+            movieViewModel.getMovieDetails().observe(this, movie -> {
+                if (movie != null) {
+                    // Set text fields with movie data
+                    movieTitle.setText(movie.getTitle());
+                    movieYear.setText("Year: " + movie.getYear());
+                    movieRated.setText("Rated: " + movie.getRated());
+                    movieReleased.setText("Released: " + movie.getReleased());
+                    movieRuntime.setText("Runtime: " + movie.getRuntime());
+                    movieGenre.setText("Genre: " + movie.getGenre());
+                    movieDirector.setText("Director: " + movie.getDirector());
+                    movieWriter.setText("Writer: " + movie.getWriter());
+                    movieActors.setText("Actors: " + movie.getActors());
+                    moviePlot.setText("Plot: " + movie.getPlot());
+                    movieLanguage.setText("Language: " + movie.getLanguage());
+                    movieCountry.setText("Country: " + movie.getCountry());
+                    movieAwards.setText("Awards: " + movie.getAwards());
+                    movieRating.setText("IMDb Rating: " + movie.getImdbRating());
+
+                    // Load poster image from URL
+                    String posterUrl = movie.getPoster();
+                    if (posterUrl != null && !posterUrl.isEmpty() && !posterUrl.equals("N/A")) {
+                        new LoadImageTask(moviePoster).execute(posterUrl);
+                    } else {
+                        moviePoster.setImageResource(android.R.drawable.ic_menu_report_image);
+                    }
+                }
+            });
         } else {
-            // If no data was received, display default values
-            movieTitle.setText("No Data");
-            movieYear.setText("Unknown");
-            movieType.setText("Unknown");
-            moviePoster.setImageResource(android.R.drawable.ic_menu_report_image);
+            movieTitle.setText("No Movie Selected");
         }
 
-        // Handle back button click event - closes the activity and returns to MainActivity
+        // Handle back button click - go back to the MainActivity
         backButton.setOnClickListener(v -> finish());
     }
 
     /**
-     * AsyncTask for downloading and setting the movie poster image.
-     * This ensures image loading is done in the background without freezing the UI.
+     * AsyncTask to load movie poster image from a URL without blocking the UI thread.
      */
     private static class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
         private final ImageView imageView;
@@ -81,7 +117,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         @Override
         protected Bitmap doInBackground(String... urls) {
-            String url = urls[0]; // Get the image URL
+            String url = urls[0];
             Bitmap bitmap = null;
             try {
                 InputStream inputStream = new URL(url).openStream();
@@ -92,10 +128,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
             return bitmap;
         }
 
-        /**
-         * After the image is downloaded, set it to the ImageView.
-         * If image loading fails, display a default placeholder.
-         */
         @Override
         protected void onPostExecute(Bitmap result) {
             if (result != null) {

@@ -7,7 +7,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.content.Intent;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,7 +21,7 @@ import java.util.List;
 
 /**
  * MainActivity handles the movie search screen.
- * It connects the UI to the ViewModel and displays search results.
+ * It connects the UI to the ViewModel and displays search results in a RecyclerView.
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -51,12 +50,9 @@ public class MainActivity extends AppCompatActivity {
         // Initialize Adapter and define click behavior on each movie item
         movieAdapter = new MovieAdapter(movieList, movie -> {
             if (movie != null) {
-                // If a movie is clicked, open the details screen and pass the movie data
+                // When a movie is clicked, open the MovieDetailsActivity and pass only the IMDb ID
                 Intent intent = new Intent(MainActivity.this, MovieDetailsActivity.class);
-                intent.putExtra("title", movie.getTitle());
-                intent.putExtra("year", movie.getYear());
-                intent.putExtra("type", movie.getType());
-                intent.putExtra("poster", movie.getPoster());
+                intent.putExtra("imdbID", movie.getImdbID()); // Pass only the imdbID
                 startActivity(intent);
             } else {
                 // Show error toast if movie data is missing
@@ -77,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 // Show toast if search input is empty
                 Toast.makeText(this, getString(R.string.toast_enter_movie), Toast.LENGTH_SHORT).show();
-
             }
         });
 

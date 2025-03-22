@@ -21,24 +21,29 @@ import java.util.List;
 
 /**
  * MovieAdapter is a RecyclerView Adapter responsible for displaying movie items in a list.
- * It binds movie data to the UI elements and handles click events.
+ * It binds movie data (title, year, poster, rating) to the UI elements and handles item click events.
  */
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
-    private final List<MovieItem> movieList; // List to store movie data
-    private final OnMovieClickListener listener; // Click listener for movie selection
+    // List that holds all the movies to be displayed
+    private final List<MovieItem> movieList;
+
+    // Listener interface to handle clicks on individual movie items
+    private final OnMovieClickListener listener;
 
     /**
-     * Interface for handling click events on movie items.
+     * Interface to handle movie item clicks.
+     * Implemented by MainActivity.
      */
     public interface OnMovieClickListener {
         void onMovieClick(MovieItem movie);
     }
 
     /**
-     * Constructor for the adapter.
-     * @param movieList - List of movies to display.
-     * @param listener - Callback for handling movie click events.
+     * Adapter constructor to initialize movie list and click listener.
+     *
+     * @param movieList - List of MovieItem objects
+     * @param listener  - Callback when a movie is clicked
      */
     public MovieAdapter(List<MovieItem> movieList, OnMovieClickListener listener) {
         this.movieList = movieList;
@@ -46,8 +51,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     /**
-     * Creates a new ViewHolder when needed.
-     * Inflates the `item_movie.xml` layout to be used in the RecyclerView.
+     * Inflates the layout for each item in the RecyclerView.
+     *
+     * @param parent   - RecyclerView parent
+     * @param viewType - Not used here
+     * @return ViewHolder containing the inflated layout
      */
     @NonNull
     @Override
@@ -57,26 +65,30 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     /**
-     * Binds data to the ViewHolder.
-     * This method is called for each item in the list to update UI elements.
+     * Binds movie data to each item in the RecyclerView.
+     *
+     * @param holder   - ViewHolder for the item
+     * @param position - Position of the movie in the list
      */
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         MovieItem movie = movieList.get(position);
 
-        // Set movie title and release year
+        // Set title and year
         holder.titleTextView.setText(movie.getTitle());
-        holder.yearTextView.setText(movie.getYear());
+        holder.yearTextView.setText("Year: " + movie.getYear());
 
-        // Load image using AsyncTask
+        // Load the movie poster using AsyncTask
         new LoadImageTask(holder.posterImageView).execute(movie.getPoster());
 
-        // Handle click event for the movie item
+        // Set click listener for each item
         holder.itemView.setOnClickListener(v -> listener.onMovieClick(movie));
     }
 
     /**
-     * Returns the total number of items in the movie list.
+     * Returns the number of items in the movie list.
+     *
+     * @return total count of movies
      */
     @Override
     public int getItemCount() {
@@ -84,24 +96,24 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     /**
-     * ViewHolder class that represents a single item in the RecyclerView.
-     * It holds references to the UI components of `item_movie.xml`.
+     * ViewHolder class that holds references to each item view's components.
      */
     public static class MovieViewHolder extends RecyclerView.ViewHolder {
-        TextView titleTextView, yearTextView;
+        TextView titleTextView, yearTextView, ratingTextView;
         ImageView posterImageView;
 
         public MovieViewHolder(@NonNull View itemView) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.movieTitle);
             yearTextView = itemView.findViewById(R.id.movieYear);
+            ratingTextView = itemView.findViewById(R.id.movieRating); // New TextView for rating
             posterImageView = itemView.findViewById(R.id.moviePoster);
         }
     }
 
     /**
-     * AsyncTask to load images from the internet in the background.
-     * This prevents blocking the main UI thread while fetching images.
+     * AsyncTask to load poster images from a URL in the background.
+     * Prevents UI freezing while loading images.
      */
     private static class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
         private final ImageView imageView;
@@ -123,16 +135,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             return bitmap;
         }
 
-        /**
-         * After the image is downloaded, set it in the ImageView.
-         * If the image fails to load, display a default error icon.
-         */
         @Override
         protected void onPostExecute(Bitmap result) {
             if (result != null) {
                 imageView.setImageBitmap(result);
             } else {
-                imageView.setImageResource(android.R.drawable.ic_menu_report_image);// Default image if loading fails
+                imageView.setImageResource(android.R.drawable.ic_menu_report_image);
             }
         }
     }

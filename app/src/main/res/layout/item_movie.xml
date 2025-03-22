@@ -14,7 +14,7 @@
         android:layout_height="150dp"
         android:scaleType="centerCrop"/>
 
-    <!-- Movie Info Section (Title & Year) -->
+    <!-- Movie Info Section (Title, Year, Rating) -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -38,6 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/gray_text"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp"/>
     </LinearLayout>
 </LinearLayout>

@@ -1,61 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="20dp">
+    android:background="@color/black">
 
-    <!-- Movie Poster -->
-    <ImageView
-        android:id="@+id/moviePoster"
-        android:layout_width="220dp"
-        android:layout_height="320dp"
-        android:scaleType="centerCrop"
-        android:layout_gravity="center_horizontal"
-        android:contentDescription="@string/movie_poster_desc"/>
-
-    <!-- Movie Title -->
-    <TextView
-        android:id="@+id/movieTitle"
-        android:layout_width="wrap_content"
+    <!-- Container for all content -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center_horizontal"/>
+        android:orientation="vertical"
+        android:padding="20dp">
 
-    <!-- Movie Year -->
-    <TextView
-        android:id="@+id/movieYear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/gray_text"
-        android:textSize="16sp"
-        android:layout_marginTop="5dp"
-        android:layout_gravity="center_horizontal"/>
+        <!-- Top App Bar with Back Button -->
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_back_white"
+            android:background="@drawable/circle_red_background"
+            android:scaleType="center"
+            android:contentDescription="@string/back_button_text"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="start" />
 
-    <!-- Movie Type (e.g., Movie, Series) -->
-    <TextView
-        android:id="@+id/movieType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/gray_text"
-        android:textSize="16sp"
-        android:layout_marginTop="5dp"
-        android:layout_gravity="center_horizontal"/>
+        <!-- Movie Poster -->
+        <ImageView
+            android:id="@+id/moviePoster"
+            android:layout_width="220dp"
+            android:layout_height="320dp"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/movie_poster_desc" />
 
-    <!-- Back Button -->
-    <Button
-        android:id="@+id/backButton"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text="@string/back_button_text"
-        android:textColor="@color/white"
-        android:background="@color/netflix_red"
-        android:layout_marginTop="25dp"
-        android:padding="12dp"
-        android:layout_gravity="center_horizontal"/>
-</LinearLayout>
+        <!-- Title -->
+        <TextView
+            android:id="@+id/movieTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginTop="15dp" />
+
+        <!-- Year -->
+        <TextView
+            android:id="@+id/movieYear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_text"
+            android:textSize="16sp"
+            android:gravity="center" />
+
+        <!-- Details Section -->
+        <TextView android:id="@+id/movieRated"
+            style="@style/DetailStyle"/>
+        <TextView android:id="@+id/movieReleased"
+            style="@style/DetailStyle"/>
+        <TextView android:id="@+id/movieRuntime"
+            style="@style/DetailStyle"/>
+        <TextView android:id="@+id/movieGenre"
+            style="@style/DetailStyle"/>
+        <TextView android:id="@+id/movieDirector"
+            style="@style/DetailStyle"/>
+        <TextView android:id="@+id/movieWriter"
+            style="@style/DetailStyle"/>
+        <TextView android:id="@+id/movieActors"
+            style="@style/DetailStyle"/>
+
+        <!-- Plot with justified text -->
+        <TextView
+            android:id="@+id/moviePlot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_text"
+            android:textSize="15sp"
+            android:layout_marginTop="10dp"
+            android:lineSpacingExtra="4dp"
+            android:justificationMode="inter_word"
+            android:textAlignment="viewStart" />
+
+        <TextView android:id="@+id/movieLanguage"
+            style="@style/DetailStyle"/>
+        <TextView android:id="@+id/movieCountry"
+            style="@style/DetailStyle"/>
+        <TextView android:id="@+id/movieAwards"
+            style="@style/DetailStyle"/>
+        <TextView android:id="@+id/movieRating"
+            style="@style/DetailStyle"
+            android:textStyle="bold"
+            android:textColor="@color/netflix_red"
+            android:textSize="18sp"/>
+
+    </LinearLayout>
+</ScrollView>

@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mymoviesearchapplication.R;
 import com.example.mymoviesearchapplication.model.MovieItem;
 import com.example.mymoviesearchapplication.viewmodel.MovieViewModel;
+import com.example.mymoviesearchapplication.view.FavoritesActivity;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main); // Inflate the layout file for this activity
 
@@ -75,6 +78,13 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, getString(R.string.toast_enter_movie), Toast.LENGTH_SHORT).show();
             }
         });
+
+        // Handle "View Favorites" button click
+        Button viewFavoritesButton = findViewById(R.id.viewFavoritesButton);
+        viewFavoritesButton.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, FavoritesActivity.class));
+        });
+
 
         // Observe LiveData from the ViewModel to update the UI automatically
         movieViewModel.getMovies().observe(this, movies -> {

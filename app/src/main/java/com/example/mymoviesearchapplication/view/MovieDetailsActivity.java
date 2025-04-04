@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -18,12 +20,23 @@ import com.example.mymoviesearchapplication.viewmodel.MovieViewModel;
 import java.io.InputStream;
 import java.net.URL;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.mymoviesearchapplication.model.FavoriteMovie;
+
+
 /**
  * MovieDetailsActivity is responsible for displaying detailed information
  * about a selected movie. It fetches data from the ViewModel using the IMDb ID
  * passed from MainActivity and updates the UI accordingly.
  */
 public class MovieDetailsActivity extends AppCompatActivity {
+
+    //Firebase declarations
+    private Button addToFavoritesButton;
+    private FirebaseFirestore db;
+    private FirebaseAuth auth;
+
 
     // UI components for displaying full movie details
     private ImageView moviePoster;
@@ -40,6 +53,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details); // Load the layout
+
+        // Firebase & UI button (set BEFORE observers)
+        addToFavoritesButton = findViewById(R.id.addToFavoritesButton);
+        auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         // Connect UI elements to Java variables
         moviePoster = findViewById(R.id.moviePoster);
@@ -95,6 +113,29 @@ public class MovieDetailsActivity extends AppCompatActivity {
                     } else {
                         moviePoster.setImageResource(android.R.drawable.ic_menu_report_image);
                     }
+
+                    addToFavoritesButton.setOnClickListener(view -> {
+                        String userId = auth.getCurrentUser().getUid();
+
+                        FavoriteMovie fav = new FavoriteMovie(
+                                userId,
+                                imdbID,
+                                movie.getTitle(),
+                                movie.getPoster(),
+                                movie.getImdbRating(),
+                                "" // Empty description, user can edit later
+                        );
+
+                        db.collection("favorites")
+                                .add(fav)
+                                .addOnSuccessListener(documentReference -> {
+                                    Toast.makeText(this, "Added to Favorites!", Toast.LENGTH_SHORT).show();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(this, "Failed to add: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                });
+                    });
+
                 }
             });
         } else {
@@ -103,6 +144,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         // Handle back button click - go back to the MainActivity
         backButton.setOnClickListener(v -> finish());
+
     }
 
     /**

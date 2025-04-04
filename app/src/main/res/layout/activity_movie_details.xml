@@ -11,17 +11,45 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <!-- Top App Bar with Back Button -->
-        <ImageButton
-            android:id="@+id/backButton"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_arrow_back_white"
-            android:background="@drawable/circle_red_background"
-            android:scaleType="center"
-            android:contentDescription="@string/back_button_text"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
             android:layout_marginTop="10dp"
-            android:layout_gravity="start" />
+            android:paddingHorizontal="16dp">
+
+            <!-- Back Button -->
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_back_white"
+                android:background="@drawable/circle_red_background"
+                android:scaleType="center"
+                android:contentDescription="@string/back_button_text"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="start" />
+
+            <!-- Spacer (optional, adds space between buttons) -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+
+            <!-- Add to Favorites Button -->
+            <Button
+                android:id="@+id/addToFavoritesButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add to Favorites"
+                android:background="@drawable/button_box_bg"
+                android:scaleType="center"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="end" />
+        </LinearLayout>
+
 
         <!-- Movie Poster -->
         <ImageView

@@ -8,4 +8,18 @@
     <string name="toast_enter_movie">Enter a movie title</string>
     <string name="toast_clicked_movie">Clicked: </string>
     <string name="toast_movie_missing">Error: Movie data is missing</string>
+
+    <!-- Register/Login screen -->
+    <string name="emailEditText">example@gmail.com</string>
+    <string name="passwordEditText">example@gmail.com</string>
+    <string name="login_button_text">Login</string>
+    <string name="register_button_text">Register</string>
+    <string name="cancel_button_text">Cancel</string>
+    <string name="signup_text">Don’t have an account? Sign up</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="toast_registration_success">Registration successful! Please login.</string>
+    <string name="toast_registration_failed">Registration failed</string>
+    <string name="toast_login_failed">Login failed</string>
+    <string name="toast_input_missing">Please enter both email and password</string>
 </resources>

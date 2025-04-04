@@ -3,7 +3,7 @@
     android:shape="rectangle">
 
     <!-- Rounded corners for a modern, soft button look -->
-    <corners android:radius="20dp"/>
+    <corners android:radius="10dp"/>
 
     <!-- Solid fill color (Netflix-style red) -->
     <solid android:color="@color/netflix_red"/>

@@ -19,18 +19,32 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyMovieSearchApplication"
         tools:targetApi="31">
+
+        <!-- New LoginActivity as the launcher -->
         <activity
-            android:name=".view.MainActivity"
+            android:name=".view.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.MovieDetailsActivity" android:exported="false"/>
+        <!-- RegisterActivity (launched if not login) -->
+        <activity android:name=".view.RegisterActivity" android:exported="false" />
+
+
+        <!-- MainActivity (now launched after login) -->
+        <activity android:name=".view.MainActivity" android:exported="false" />
+
+        <!-- Movie Details screen -->
+        <activity android:name=".view.MovieDetailsActivity" android:exported="false" />
+
+        <activity android:name=".view.FavoritesActivity" android:exported="false" />
+
+        <activity android:name=".view.FavoritesDetailsActivity" android:exported="false" />
 
     </application>
+
 
 </manifest>
